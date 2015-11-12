@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +27,7 @@ import com.zellyalgo.laneveradepablo.slideFridges.BigFridge;
 import com.zellyalgo.laneveradepablo.slideFridges.LittleFridge;
 import com.zellyalgo.laneveradepablo.utils.OnSwipeTouchListener;
 
-public class LaNeveraLogin extends Activity implements GoogleApiClient.ConnectionCallbacks,
+public class LaNeveraLogin extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
 
@@ -55,83 +57,35 @@ public class LaNeveraLogin extends Activity implements GoogleApiClient.Connectio
                 .addApi(Plus.API)
                 .addScope(new Scope(Scopes.PROFILE))
                 .build();
-        findViewById(R.id.layout_fridges).setVisibility(View.GONE);
+        findViewById(R.id.pager).setVisibility(View.GONE);
         if(mShouldResolve){
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             if (savedInstanceState == null) {
                 rellenarListaNeveras();
             }
-            findViewById(R.id.layout_fridges).setVisibility(View.VISIBLE);
+            findViewById(R.id.pager).setVisibility(View.VISIBLE);
         }
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
-        findViewById(R.id.layout_fridges).setOnTouchListener(new OnSwipeTouchListener(this) {
-            @Override
-            public void onSwipeLeft() {
-                Log.d("LaNeveraDePablo", "IZQUIERDAAA");
-                moveFridgeLeft();
-            }
+        ViewPager mPager = (ViewPager) findViewById(R.id.pager);
+        ViewPagerAdapter mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mPagerAdapter);
 
-            @Override
-            public void onSwipeRight() {
-                Log.d("LaNeveraDePablo", "DERECHAAAAA");
-                moveFridgeRight();
-            }
-        });
+        //mPager.setClipChildren(false);
+        mPager.setPageMargin(
+                getResources().getDimensionPixelOffset(R.dimen.viewpager_margin));
+        mPager.setOffscreenPageLimit(9);
     }
 
     public void rellenarListaNeveras (){
 
-        getFragmentManager()
+        /*getFragmentManager()
                 .beginTransaction()
                 .add(R.id.prevFridge, new LittleFridge())
                 .add(R.id.fridge, new BigFridge())
                 .add(R.id.nextFridge, new LittleFridge())
-                .commit();
+                .commit();*/
     }
-    private void moveFridgeRight() {
-        // Flip to the back.
-        mShowingBack = true;
-        // Create and commit a new fragment transaction that adds the fragment for the back of
-        // the card, uses custom animations, and is part of the fragment manager's back stack.
-        getFragmentManager()
-                .beginTransaction()
-                        // Replace the default fragment animations with animator resources representing
-                        // rotations when switching to the back of the card, as well as animator
-                        // resources representing rotations when flipping back to the front (e.g. when
-                        // the system Back button is pressed).
-                .setCustomAnimations(
-                        R.layout.fridge_smaller_right, R.layout.fridge_bigger_right)
-                        // Replace any fragments currently in the container view with a fragment
-                        // representing the next page (indicated by the just-incremented currentPage
-                        // variable).
-                .replace(R.id.prevFridge, new BigFridge())
-                        // Commit the transaction.
-                .commit();
-        mShowingBack = false;
-    }
-    private void moveFridgeLeft() {
-        // Flip to the back.
-        mShowingBack = true;
-        // Create and commit a new fragment transaction that adds the fragment for the back of
-        // the card, uses custom animations, and is part of the fragment manager's back stack.
-        getFragmentManager()
-                .beginTransaction()
-                        // Replace the default fragment animations with animator resources representing
-                        // rotations when switching to the back of the card, as well as animator
-                        // resources representing rotations when flipping back to the front (e.g. when
-                        // the system Back button is pressed).
-                .setCustomAnimations(
-                        R.layout.fridge_bigger_right, R.layout.fridge_smaller_right)
-                        // Replace any fragments currently in the container view with a fragment
-                        // representing the next page (indicated by the just-incremented currentPage
-                        // variable).
-                .replace(R.id.prevFridge, new LittleFridge())
-                        // Commit the transaction.
-                .commit();
-        mShowingBack = false;
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -185,7 +139,7 @@ public class LaNeveraLogin extends Activity implements GoogleApiClient.Connectio
             toast.show();
 
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-            findViewById(R.id.layout_fridges).setVisibility(View.GONE);
+            findViewById(R.id.pager).setVisibility(View.GONE);
         }
     }
 
@@ -207,7 +161,7 @@ public class LaNeveraLogin extends Activity implements GoogleApiClient.Connectio
         // establish a service connection to Google Play services.
         Log.d(TAG, "onConnected:" + bundle);
         findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-        findViewById(R.id.layout_fridges).setVisibility(View.VISIBLE);
+        findViewById(R.id.pager).setVisibility(View.VISIBLE);
         rellenarListaNeveras();
         mShouldResolve = false;
         if (Plus.AccountApi.getAccountName(mGoogleApiClient) != null) {
