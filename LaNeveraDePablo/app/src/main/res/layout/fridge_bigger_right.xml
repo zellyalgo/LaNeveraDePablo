@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <objectAnimator
+        android:valueFrom="50dp"
+        android:valueTo="100dp"
+        android:propertyName="layout_width"
+        android:duration="5" />
+
+    <!-- Rotate. -->
+    <objectAnimator
+        android:valueFrom="50dp"
+        android:valueTo="100dp"
+        android:propertyName="layout_height"
+        android:duration="5" />
+</set>
