@@ -15,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -25,6 +26,7 @@ import com.google.android.gms.plus.Plus;
 import com.zellyalgo.laneveradepablo.R;
 import com.zellyalgo.laneveradepablo.slideFridges.BigFridge;
 import com.zellyalgo.laneveradepablo.slideFridges.LittleFridge;
+import com.zellyalgo.laneveradepablo.slideFridges.ThreeDCarousel;
 import com.zellyalgo.laneveradepablo.utils.OnSwipeTouchListener;
 
 public class LaNeveraLogin extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks,
@@ -75,6 +77,27 @@ public class LaNeveraLogin extends FragmentActivity implements GoogleApiClient.C
         mPager.setPageMargin(
                 getResources().getDimensionPixelOffset(R.dimen.viewpager_margin));
         mPager.setOffscreenPageLimit(9);
+        mPager.setPageTransformer(true, new ThreeDCarousel());
+        gestionarTamaños(mPager);
+    }
+
+    private void gestionarTamaños(ViewPager mPager) {
+        int currentElement = mPager.getCurrentItem();
+        int numMaxItems = mPager.getAdapter().getCount();
+        Log.d(TAG, "currentElement" + currentElement);
+        Log.d(TAG, "numMaxItems" + numMaxItems);
+        View prev, next;
+        if(currentElement > 0) {
+            prev = mPager.getChildAt(currentElement - 1);
+            //prev.setPadding(40, 40, 40, 40);
+        }
+        if(currentElement < numMaxItems) {
+            next = mPager.getChildAt(currentElement + 1);
+            //Log.d(TAG, next.toString());
+            //next.setPadding(40, 40, 40, 40);
+            //TextView text = (TextView)next.findViewById(R.id.textFragment);
+
+        }
     }
 
     public void rellenarListaNeveras (){
