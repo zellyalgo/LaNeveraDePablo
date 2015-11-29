@@ -11,7 +11,7 @@ public class ThreeDCarousel implements ViewPager.PageTransformer {
     private static final float FINAL_POSITION = 1.75f;
     private static final float INITIAL_POSITION = 0.5f;
     private static final float MEDIUM_POSITION = 0.625F;
-    private static final float SCALE_MINIMUN_FACTOR = 0.625F;
+    private static final float SCALE_MIN_FACTOR = 0.625F;
     private static final float INCLINE_FACTOR = 2;
     private static final float MOVE_FACTOR_LEFT = 0.70f;
     private static final float MOVE_FACTOR_RIGHT = 1.3125f;
@@ -28,8 +28,8 @@ public class ThreeDCarousel implements ViewPager.PageTransformer {
                 view.setScaleY(-position/INCLINE_FACTOR +MOVE_FACTOR_RIGHT);
             }
         } else {
-            view.setScaleX(SCALE_MINIMUN_FACTOR);
-            view.setScaleY(SCALE_MINIMUN_FACTOR);
+            view.setScaleX(SCALE_MIN_FACTOR);
+            view.setScaleY(SCALE_MIN_FACTOR);
         }
     }
 }
